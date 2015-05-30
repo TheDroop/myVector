@@ -1,6 +1,7 @@
 #include "stdlib.h"
 #include "stdio.h"
 #include "vector.h"
+#include "string.h"
 
 VECTOR* newVector() {
 
@@ -45,11 +46,25 @@ int get(VECTOR* v, unsigned int position) {
 
 }
 
+void shrink(VECTOR* v) {
+
+	unsigned int adress = (unsigned int) malloc((v->max_size/2)*sizeof(int));
+	memcpy(adress, v->first, v->length*sizeof(int));
+
+	unsigned int temp = v->first;
+	v->first = adress;
+	free(temp);
+	v->max_size = v->max_size/2;
+
+}
+
 void del(VECTOR* v, int position) {
 
 	unsigned int adress = (unsigned int) v->first+(position+1)*sizeof(int);
-	memcpy(adress-sizeof(int), adress, (v->length-position)*sizeof(int));
+	memmove(adress-sizeof(int), adress, (v->length-position)*sizeof(int));
 	v->length--;
+
+	if(length(v) < v->max_size/2) shrink(v);
 
 }
 
