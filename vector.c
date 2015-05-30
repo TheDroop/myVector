@@ -2,31 +2,31 @@
 #include "stdio.h"
 #include "vector.h"
 
-VECTOR newVector() {
+VECTOR* newVector() {
 
-	VECTOR new = (VECTOR) malloc(sizeof(VECTOR));
+	VECTOR *new = (VECTOR*) malloc(sizeof(VECTOR));
 	new->length = 0;
-	new->first = malloc(sizeof(int));
+	new->first = (unsigned int) malloc(sizeof(int));
 	new->max_size = 1;
 	
 	return new;
 
 }
 
-int length(VECTOR v) {
+int length(VECTOR* v) {
 
 	return v->length;
 
 }
 
-void add(VECTOR v, int data, int position) {
+void add(VECTOR* v, int data, unsigned int position) {
 
 	if(v->max_size-v->length > 0) {
 
-		unsigned int *ptr = (unsigned int) v->first+position*sizeof(int);
+		unsigned int adress = (unsigned int) v->first+position*sizeof(int);
 		
-			memcpy(ptr+sizeof(int), ptr, (v->length-position)*sizeof(int));
-			memcpy(ptr, &data, sizeof(int);
+			memcpy(adress+sizeof(int), adress, (v->length-position)*sizeof(int));
+			memcpy(adress, &data, sizeof(int));
 			v->length++;
 
 	} else {
@@ -38,26 +38,29 @@ void add(VECTOR v, int data, int position) {
 
 }
 
-int get(VECTOR v, int position) {
+int get(VECTOR* v, unsigned int position) {
 
-	unsigned int *ptr = (unsigned int) v->first+position*sizeof(int);
-	return ptr;
-
-}
-
-void del(VECTOR v, int position) {
-
-	unsigned int *ptr = (unsigned int) v->first+(position+1)*sizeof(int);
-	memcpy(ptr-sizeof(int), ptr, (v->length-position)*sizeof(int);
+	unsigned int *adress = (unsigned int) v->first+position*sizeof(int);
+	return *(adress);
 
 }
 
-void expand(VECTOR v) {
+void del(VECTOR* v, int position) {
 
-	unsigned int *ptr = malloc(v->max_size*2*sizeof(int));
-	memcpy(ptr, v->first, v->length*sizeof(int);
-	unsigned int *ptr2 = v->first;
-	v->first = ptr;
-	free(ptr2);
+	unsigned int adress = (unsigned int) v->first+(position+1)*sizeof(int);
+	memcpy(adress-sizeof(int), adress, (v->length-position)*sizeof(int));
+	v->length--;
+
+}
+
+void expand(VECTOR* v) {
+
+	unsigned int adress = (unsigned int) malloc(v->max_size*2*sizeof(int));
+	memcpy(adress, v->first, v->length*sizeof(int));
+
+	unsigned int temp = v->first;
+	v->first = adress;
+	free(temp);
+	v->max_size = v->max_size*2;
 
 }
