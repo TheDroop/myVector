@@ -4,9 +4,9 @@
 
 VECTOR newVector() {
 
-	VECTOR new = (VECTOR) malloc(sizeof(VECTOR)+sizeof(ELEMENT));
+	VECTOR new = (VECTOR) malloc(sizeof(VECTOR));
 	new->length = 0;
-	new->first = NULL;
+	new->first = malloc(sizeof(int));
 	new->max_size = 1;
 	
 	return new;
@@ -23,21 +23,11 @@ void add(VECTOR v, int data, int position) {
 
 	if(v->max_size-v->length > 0) {
 
-		ELEMENT *tmp = v->first;
+		unsigned int *ptr = (unsigned int) v->first+position*sizeof(int);
 		
-		if(position != 0) {
-
-			for(int i = 0; i < position-1; i++) {
-
-				tmp = tmp->next;
-
-			}
- 
-		} else {
-
-			ELEMENT new = (ELEMENT)
-
-		}
+			memcpy(ptr+sizeof(int), ptr, (v->length-position)*sizeof(int));
+			memcpy(ptr, &data, sizeof(int);
+			v->length++;
 
 	} else {
 
@@ -47,5 +37,27 @@ void add(VECTOR v, int data, int position) {
 	}
 
 }
-int get(VECTOR v, int position);
-void del(VECTOR v, int position);
+
+int get(VECTOR v, int position) {
+
+	unsigned int *ptr = (unsigned int) v->first+position*sizeof(int);
+	return ptr;
+
+}
+
+void del(VECTOR v, int position) {
+
+	unsigned int *ptr = (unsigned int) v->first+(position+1)*sizeof(int);
+	memcpy(ptr-sizeof(int), ptr, (v->length-position)*sizeof(int);
+
+}
+
+void expand(VECTOR v) {
+
+	unsigned int *ptr = malloc(v->max_size*2*sizeof(int));
+	memcpy(ptr, v->first, v->length*sizeof(int);
+	unsigned int *ptr2 = v->first;
+	v->first = ptr;
+	free(ptr2);
+
+}

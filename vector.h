@@ -1,18 +1,10 @@
 typedef struct dVector VECTOR;
-typedef struct dElement ELEMENT;
 
 struct dVector {
 
 	int length;
-	ELEMENT *first;
+	int *first;
 	int max_size;
-
-};
-
-struct element {
-
-	int data;
-	ELEMENT *next;
 
 };
 
